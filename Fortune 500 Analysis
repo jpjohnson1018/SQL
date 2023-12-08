@@ -72,3 +72,27 @@ ELSE "Small"
 END AS Company_Size
 FROM fortune_companies
 ORDER BY Company_Size; 
+
+# Determine the industries that have multiple companies on the Fortune 500 list. 
+
+SELECT COUNT(company_ID) AS "Count", industry
+FROM fortune_companies
+GROUP BY industry
+HAVING COUNT(company_ID) > 1
+ORDER BY COUNT(company_ID) desc;
+
+# Identify the companies with an average employment of at least 5 years that offer healthcare and 15+ PTO days. 
+
+SELECT company_name, paid_time_off_days AS "PTO", 
+avg_employee_tenure AS "Average Employment"
+FROM fortune_companies
+WHERE healthcare_benefits = "1" 
+AND paid_time_off_days >=15
+and avg_employee_tenure>=5
+ORDER BY avg_employee_tenure desc
+
+
+# Which company has the highest average tenure and how many employees do they have. 
+SELECT MAX(avg_employee_tenure) AS "Avg. Tenure", company_name, employees
+FROM fortune_companies
+
