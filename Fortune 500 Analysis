@@ -61,17 +61,16 @@ VALUES
 
 # Analysis: 
 
-# Determine the size of the company based on the number of employees. 
+# Determine which companies are maternity friendly. 
 
-SELECT company_name, industry,
-CASE 
-WHEN employees > 1000000 THEN "Extra Large"
-WHEN employees > 100000 THEN "Large"
-WHEN employees > 10000 THEN "Mid-Size"
-ELSE "Small"
-END AS Company_Size
+SELECT company_name, maternity_leave_weeks,
+CASE WHEN maternity_leave_weeks >=13 THEN "Maternity Friendly"
+WHEN maternity_leave_weeks >=10 THEN "Somewhat Friendly"
+ELSE "Not Maternity Friendly"
+END AS "Maternity Designation"
 FROM fortune_companies
-ORDER BY Company_Size; 
+ORDER BY maternity_leave_weeks;
+ 
 
 # Determine the industries that have multiple companies on the Fortune 500 list. 
 
@@ -93,6 +92,22 @@ ORDER BY avg_employee_tenure desc
 
 
 # Which company has the highest average tenure and how many employees do they have. 
+
 SELECT MAX(avg_employee_tenure) AS "Avg. Tenure", company_name, employees
 FROM fortune_companies
+
+# Determine the average number of employees for companies with revenue > 200. 
+
+SELECT AVG(employees), company_name, revenue
+FROM fortune_companies
+GROUP BY industry
+HAVING revenue>200
+ORDER BY revenue desc;
+
+# Identify the technology companies that have a revenue > 350. 
+
+SELECT company_name, revenue
+FROM fortune_companies
+WHERE industry="Technology"
+AND revenue>=350;
 
